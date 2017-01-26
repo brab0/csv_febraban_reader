@@ -1,5 +1,7 @@
 require "csv_febraban_reader/version"
 
 module CsvFebrabanReader
-  # Your code goes here...
+  def self.hi
+    puts "Hello world!"
+  end
 end
