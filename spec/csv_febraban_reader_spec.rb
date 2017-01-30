@@ -7,10 +7,7 @@ describe CsvFebrabanReader do
   end
 
   it 'should match all telephones with their references' do
-    file = "lib/sample-files/tim/febraban.csv"
-
-    #CsvFebrabanReader.detalhes(file)
-    #CsvFebrabanReader.detalhesByPhone(file, "048-8802-2245")
+    file = "./lib/sample-files/tim/sample-tim.csv"
 
     CsvFebrabanReader.read(file, ConfigIndexReader::V1){ |fatura|
       fatura.telefone.itens.each_with_index do |telefone, index|

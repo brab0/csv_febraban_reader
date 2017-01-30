@@ -5,7 +5,7 @@ Leitor de Faturas Csv Febraban
 
     $ bundle
 
-Or install it yourself as:
+Ou:
 
     $ gem install csv_febraban_reader
 

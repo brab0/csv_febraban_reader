@@ -3,6 +3,7 @@ require "entities/Fatura"
 require "config_index_reader"
 
 module CsvFebrabanReader
+
   @fatura = Fatura.new
 
   def self.read(file, map, &block)
