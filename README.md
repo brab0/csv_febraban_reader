@@ -10,9 +10,14 @@ Or install it yourself as:
     $ gem install csv_febraban_reader
 
 ## Usage
+###Teste
 
     $ rake
+
+###Outputs
+
     $ CsvFebrabanReader.detalhes('/path/to/file')
+    
     $ CsvFebrabanReader.detalhesByPhone('/path/to/file', "xx-xxxx-xxxx')
     
 ## TODO
