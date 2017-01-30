@@ -14,8 +14,13 @@ Or install it yourself as:
 
     $ rake
 
-###Outputs
-
+###Run
+    ```html
+       $ irb
+       $ require './lib/csv_febraban_reader.rb'
+       $ CsvFebrabanReader.detalhes './lib/sample-files/tim/sample-tim.csv'
+       $ CsvFebrabanReader.detalhesByPhone('./lib/sample-files/tim/sample-tim.csv', '048-8802-2245')
+    ´´´
     $ CsvFebrabanReader.detalhes('/path/to/file')
     
     $ CsvFebrabanReader.detalhesByPhone('/path/to/file', "xx-xxxx-xxxx')
@@ -23,4 +28,4 @@ Or install it yourself as:
 ## TODO
 
 - Ainda quero fechar o processamento com a referencia do valor total da fatura
-- rodar com: CsvFebrabanReader sample.txt 048-8802-2245
+- CodeClimate
