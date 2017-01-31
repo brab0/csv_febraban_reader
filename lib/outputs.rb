@@ -53,65 +53,28 @@ module Output
   end
 
   def self.renderSms(sms)
-    puts "| Sms:"
-    puts "|--| Quantidade Total: " +  sms.total_computado.unidade_total.to_s
-    puts "|--| Valor Total: " +  sms.total_computado.valor_total.to_s
-    puts "|--| Total de Registros: " +  sms.total_computado.quantidade_registros.to_s
+    renderDetail("Sms", 1, sms.total_computado, "quantidade")
   end
 
   def self.renderInternet(internet)
-    puts "| Internet:"
-    puts "|--| Quantidade Total(Bytes): " +  internet.total_computado.unidade_total.to_s
-    puts "|--| Valor Total: " +  internet.total_computado.valor_total.to_s
-    puts "|--| Total de Registros: " +  internet.total_computado.quantidade_registros.to_s
+    renderDetail("Internet", 1, internet.total_computado, "bytes")
   end
 
   def self.renderOutros(outros)
-    puts "| Outros:"
-    puts "|--| Quantidade Total: " +  outros.total_computado.unidade_total.to_s
-    puts "|--| Valor Total: " +  outros.total_computado.valor_total.to_s
-    puts "|--| Total de Registros: " +  outros.total_computado.quantidade_registros.to_s
+    renderDetail("Outros", 1, outros.total_computado, "duracao")
   end
 
   def self.renderLigacoes(ligacoes)
-    puts "| Ligações:"
-    puts "|--| Duração Total: " +  Time.at(ligacoes.total_computado.unidade_total).utc.strftime("%H:%M:%S")
-    puts "|--| Valor Total: " +  ligacoes.total_computado.valor_total.to_s
-    puts "|--| Total de Registros: " +  ligacoes.total_computado.quantidade_registros.to_s
-    puts "|--| Locais:"
-    puts "|--|--| Duração Total: " +  Time.at(ligacoes.local.total_computado.unidade_total).utc.strftime("%H:%M:%S")
-    puts "|--|--| Valor Total: " +  ligacoes.local.total_computado.valor_total.to_s
-    puts "|--|--| Total de Registros: " +  ligacoes.local.total_computado.quantidade_registros.to_s
-    puts "|--|--| Celular:"
-    puts "|--|--|--| Duração Total: " +  Time.at(ligacoes.local.celular.total_computado.unidade_total).utc.strftime("%H:%M:%S")
-    puts "|--|--|--| Valor Total: " +  ligacoes.local.celular.total_computado.valor_total.to_s
-    puts "|--|--|--| Total de Registros: " +  ligacoes.local.celular.total_computado.quantidade_registros.to_s
-
+    renderDetail("Ligações", 1, ligacoes.total_computado, "duracao")
+    renderDetail("Locais", 2, ligacoes.local.total_computado, "duracao")
+    renderDetail("Celular", 3, ligacoes.local.celular.total_computado, "duracao")
     renderServ(ligacoes.local.celular.consumo_tipos)
-
-    puts "|--|--| Fixo:"
-    puts "|--|--|--| Duração Total: " +  Time.at(ligacoes.local.fixo.total_computado.unidade_total).utc.strftime("%H:%M:%S")
-    puts "|--|--|--| Valor Total: " +  ligacoes.local.fixo.total_computado.valor_total.to_s
-    puts "|--|--|--| Total de Registros: " +  ligacoes.local.fixo.total_computado.quantidade_registros.to_s
-
+    renderDetail("Fixo", 3, ligacoes.local.fixo.total_computado, "duracao")
     renderServ(ligacoes.local.fixo.consumo_tipos)
-
-    puts "|--| Longa Distância:"
-    puts "|--|--| Duração Total: " +  Time.at(ligacoes.longa_distancia.total_computado.unidade_total).utc.strftime("%H:%M:%S")
-    puts "|--|--| Valor Total: " +  ligacoes.longa_distancia.total_computado.valor_total.to_s
-    puts "|--|--| Total de Registros: " +  ligacoes.longa_distancia.total_computado.quantidade_registros.to_s
-    puts "|--|--| Celular:"
-    puts "|--|--|--| Duração Total: " +  Time.at(ligacoes.longa_distancia.celular.total_computado.unidade_total).utc.strftime("%H:%M:%S")
-    puts "|--|--|--| Valor Total: " +  ligacoes.longa_distancia.celular.total_computado.valor_total.to_s
-    puts "|--|--|--| Total de Registros: " +  ligacoes.longa_distancia.celular.total_computado.quantidade_registros.to_s
-
+    renderDetail("Longa Distância", 2, ligacoes.longa_distancia.total_computado, "duracao")
+    renderDetail("Celular", 3, ligacoes.longa_distancia.celular.total_computado, "duracao")
     renderServ(ligacoes.longa_distancia.celular.consumo_tipos)
-
-    puts "|--|--| Fixo:"
-    puts "|--|--|--| Duração Total: " +  Time.at(ligacoes.longa_distancia.fixo.total_computado.unidade_total).utc.strftime("%H:%M:%S")
-    puts "|--|--|--| Valor Total: " +  ligacoes.longa_distancia.fixo.total_computado.valor_total.to_s
-    puts "|--|--|--| Total de Registros: " +  ligacoes.longa_distancia.fixo.total_computado.quantidade_registros.to_s
-
+    renderDetail("Fixo", 3, ligacoes.longa_distancia.fixo.total_computado, "duracao")
     renderServ(ligacoes.longa_distancia.fixo.consumo_tipos)
   end
 
@@ -126,5 +89,41 @@ module Output
         puts "|--|--|--|--|--| Total de Registros: " + serv.total_computado.quantidade_registros.to_s
       end
     end
+  end
+
+  def self.renderDetail(title, level, consumo, medida)
+    i = 0
+    strLevel = ""
+    strDetailLevel = ""
+    strUnidade = ""
+    strMedida = ""
+
+    loop do
+      i += 1
+      strDetailLevel += "--|"
+      if (i + 1) == level then
+        strLevel += strDetailLevel
+      end
+      break if level == i
+    end
+
+    if medida == "duracao" then
+      strMedida = "Duração Total"
+      strUnidade = Time.at(consumo.unidade_total).utc.strftime("%H:%M:%S")
+    else
+      strUnidade = consumo.unidade_total.to_s
+
+      if medida == "bytes" then
+        strMedida = "Quantidade Total de Bytes"
+      else
+        strMedida = "Quantidade Total"
+      end
+    end
+
+    puts "|" + strLevel + " " + title + ":"
+    puts "|" + strDetailLevel + " " + strMedida + ": " +  strUnidade
+    puts "|" + strDetailLevel + " Valor Total: " +  consumo.valor_total.to_s
+    puts "|" + strDetailLevel + " Total de Registros: " +  consumo.quantidade_registros.to_s
+
   end
 end
