@@ -4,7 +4,7 @@ require 'entities/ReferenciaItem'
 require 'entities/Consumo'
 
 class TelefoneItemUso
-  attr_reader :ligacoes, :sms, :internet, :outros, :total_computado
+  attr_accessor :ligacoes, :sms, :internet, :outros, :total_computado
 
   def initialize
     @total_computado = Totalizador.new

@@ -16,7 +16,7 @@ class ConsumoTipo
   end
 
   def setValorTotal(valor)
-    valorStr = valor == nil || valor == "" ? "0.0" : valor.gsub(',', '.')
+    valorStr = valor == nil || valor == "" ? "0.0" : valor.tr(',', '.')
 
     @total_computado.valor_total = valorStr.to_f
   end
@@ -27,14 +27,16 @@ class ConsumoTipo
     if unidade.match(/b|kb|mb/i) then
       @medida = "bytes"
 
+      unidade = unidade.gsub(/\s+b/i,"").tr(",",".")
+
       if unidade.match(/\s+b/i) then
-        formattedUnidade = unidade.gsub(/\s+b/i,"").gsub(",",".").to_i
+        formattedUnidade = unidade.to_i
 
       elsif unidade.match(/kb/i) then
-        formattedUnidade = unidade.gsub(/\s+kb/i,"").gsub(",",".").to_i * 1024
+        formattedUnidade = unidade.to_i * 1024
 
       elsif unidade.match(/mb/i) then
-        formattedUnidade = (unidade.gsub(/\s+mb/i,"").gsub(",",".").to_i * 1024)*1024
+        formattedUnidade = (unidade.to_i * 1024)*1024
       end
 
     elsif unidade.match(/[hms]/) then

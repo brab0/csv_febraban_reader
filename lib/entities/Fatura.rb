@@ -28,7 +28,7 @@ class Fatura
 
   def setIfRefereciaFinal(columns, map)
     if columns[map[:tpserv]].match(/total fatura/i) then
-      @total_referencia = columns[map[:valor]].gsub(",",".").to_f
+      @total_referencia = columns[map[:valor]].tr(",",".").to_f
     end
   end
 end

@@ -22,23 +22,25 @@ class TelefoneItem
     if columns[map[:data]].match(/[0-9]{2}\/[0-9]{2}\/[0-9]{2}/)
       @uso.setUso(columns, map)
     else
+      valor = columns[map[:valor]].tr(",",".").to_f
+
       case columns[map[:tpserv]]
         when /rádios|tarifa zero/i
           @mensalidade.setConsumo(columns, map)
 
         when /total de uso/i
-          @referencia.total_uso = columns[map[:valor]].gsub(",",".").to_f
+          @referencia.total_uso = valor
 
         when /total de assinatura/i
-          @referencia.total_assinatura = columns[map[:valor]].gsub(",",".").to_f
+          @referencia.total_assinatura = valor
           @assinatura.setConsumo(columns, map)
 
         when /total outros/i
-          @referencia.total_credito = columns[map[:valor]].gsub(",",".").to_f
+          @referencia.total_credito = valor
           @creditos.setConsumo(columns, map)
 
         when /pct. 100 minutos|tarifa zero/i
-          @referencia.sumTotalDescontos(columns[map[:valor]].gsub(",",".").to_f)
+          @referencia.sumTotalDescontos(valor)
           @descontos.setConsumo(columns, map)
 
       end
