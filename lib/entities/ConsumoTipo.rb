@@ -29,14 +29,15 @@ class ConsumoTipo
 
       unidade = unidade.gsub(/\s+b/i,"").tr(",",".")
 
-      if unidade.match(/\s+b/i) then
-        formattedUnidade = unidade.to_i
+      case unidade
+        when /\s+b/i
+          formattedUnidade = unidade.to_i
 
-      elsif unidade.match(/kb/i) then
-        formattedUnidade = unidade.to_i * 1024
+        when /kb/i
+          formattedUnidade = unidade.to_i * 1024
 
-      elsif unidade.match(/mb/i) then
-        formattedUnidade = (unidade.to_i * 1024)*1024
+        when /mb/i
+          formattedUnidade = (unidade.to_i * 1024)*1024
       end
 
     elsif unidade.match(/[hms]/) then
